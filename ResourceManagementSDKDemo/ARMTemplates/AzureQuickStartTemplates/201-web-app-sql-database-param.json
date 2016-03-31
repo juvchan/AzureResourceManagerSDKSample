@@ -1,0 +1,26 @@
+{
+  "siteName": {
+    "value": ""
+  },
+  "hostingPlanName": {
+    "value": ""
+  },
+  "siteLocation": {
+    "value": ""
+  },
+  "serverName": {
+    "value": ""
+  },
+  "serverLocation": {
+    "value": ""
+  },
+  "administratorLogin": {
+    "value": ""
+  },
+  "administratorLoginPassword": {
+    "value": "GEN-PASSWORD"
+  },
+  "databaseName": {
+    "value": ""
+  }
+}

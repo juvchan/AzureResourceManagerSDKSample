@@ -1,0 +1,64 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "variables": {
+    "webApiVersion": "2015-08-01",
+    "resourceGroupLocation": "[resourceGroup().location]",
+    "appServicePlanNameTidy": "[toLower(trim(parameters('appServicePlanName')))]",
+    "webAppNameTidy": "[toLower(trim(parameters('webAppName')))]"
+  },
+  "parameters": {
+    "appServicePlanName": {
+      "type": "string"
+    },
+    "sku": {
+      "type": "string",
+      "defaultValue": "Free",
+      "allowedValues": [
+        "Free",
+        "Shared",
+        "Basic",
+        "Standard"
+      ]
+    },
+    "workerSize": {
+      "type": "string",
+      "allowedValues": [
+        "0",
+        "1",
+        "2"
+      ],
+      "defaultValue": "0"
+    },
+    "webAppName": {
+      "type": "string"
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Web/serverfarms",
+      "name": "[variables('appServicePlanNameTidy')]",
+      "apiVersion": "[variables('webApiVersion')]",
+      "sku": {
+        "name": "F1",
+        "tier": "[parameters('sku')]"
+      },
+      "properties": {
+        "workerSize": "[parameters('workerSize')]"
+      },
+      "location": "[variables('resourceGroupLocation')]"
+    },
+    {
+      "type": "Microsoft.Web/sites",
+      "name": "[variables('webAppNameTidy')]",
+      "apiVersion": "[variables('webApiVersion')]",
+      "properties": {
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanNameTidy'))]"
+      },
+      "location": "[variables('resourceGroupLocation')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanNameTidy'))]"
+      ]
+    }
+  ]
+}
